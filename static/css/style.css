@@ -1,0 +1,119 @@
+/* This CSS file will need to be added to the styling of 
+your web pages for the styles to be rendered. */
+
+
+
+body{
+  background-color: #212529 !important;
+  /* width: 100%; */
+  /* height: 100vh !important ; */
+}
+
+main{
+  /* margin: 32px; */
+  margin: 45px 0px;
+  padding: 12px 12px;
+  width: 100vw;
+  /* height: 100vh; */
+}
+
+
+.image-stack{
+  position: relative;
+  /* height: 128px; */
+  /* width: 128px; */
+  height: 250px;
+  width: auto;
+  display: inline-block;
+}
+
+.image{
+
+  height: 100%;
+  width: 100%;
+
+  background-color: #212529;
+
+  object-fit: cover;
+  object-position: center center;
+  overflow: hidden;
+
+
+
+}
+
+.inner-shadow{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  box-shadow: inset 0rem 0rem 5rem 0rem  #000000;
+  pointer-events: none;
+}
+
+
+form,.form-control,.invisible{
+  color: transparent;
+  background-color: transparent;
+}
+
+#input-file{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.001;
+
+}
+
+.results{
+  margin: 12px 0px;
+  width: 100%;
+  height: 250px;
+}
+
+#spinner{
+  width: 100%
+}
+
+.grid-container{
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: auto auto auto auto auto;
+  padding: 0.5rem;
+  height: 5rem;
+}
+
+/* .color-btn{
+  margin:0;
+  padding: 0;
+  width: 100%
+} */
+
+.grid-item{
+  padding: 0;
+  margin: 0;
+
+}
+
+.color-data{
+  /* padding: auto; */
+  line-height: 5rem;
+  text-align: center;
+  vertical-align: middle;
+  height: 100%;
+
+  text-shadow: 2px 2px 5px black
+}
+
+h6{
+  margin: 2.5rem 0rem 0.1rem 0rem !important;
+}
+
+.toast-header{
+  background-color: transparent;
+}
+
+

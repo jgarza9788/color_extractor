@@ -1,0 +1,207 @@
+
+{% include "header.html" %}
+
+
+<script>
+
+  function upload (file){
+
+    //this takes the image and assigns it to the #img
+    
+    var input = document.getElementById("input-file");
+    var fReader = new FileReader();
+    fReader.readAsDataURL(input.files[0]); //image becomes blob
+    //sub function to process the blob (image)
+    fReader.onloadend = function(event){
+        var img = document.getElementById("img1");
+        img.src = event.target.result;
+    }
+    
+
+    // show the spinner
+    // document.getElementById("spinner").classList.remove("hidden");
+    spinners = document.getElementsByClassName("spinner");
+    for (i = 0; i < spinners.length; i++) {
+      spinners[i].classList.remove("hidden");
+    } 
+
+
+    // post_it();
+    document.querySelector("input[type='submit']").click();
+
+    cbtn = document.getElementsByClassName("color-btn");
+    for (i = 0; i < cbtn.length; i++) {
+      cbtn[i].style.display = "none";
+    } 
+
+  }
+
+  function post_it(){
+    console.log('post it');
+
+    const form = document.getElementsByTagName('form');
+    form.submit();
+
+  }
+
+  function copyhex(hex,txtcolor){
+    navigator.clipboard.writeText(hex).then(function() {
+      // alert(hex + ' was copied to clipboard'); 
+
+      thistoast = document.getElementById('thistoast');
+      tt = document.getElementById('toast-text')
+      tt.innerHTML = hex + " was copied to clipboard";
+      tt.style.color = txtcolor;
+      thistoast.style.background = hex;
+      
+      toast = new bootstrap.Toast(thistoast);
+      toast.show();
+
+      console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+      //console.error('Async: Could not copy text: ', err);
+
+
+      console.log(err);
+    });
+  }
+
+</script>
+
+
+
+<!-- As a heading -->
+<nav class="navbar fixed-top bg-dark">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1 text-light">
+
+      <i class="mdi mdi-image"></i><i class="mdi mdi-arrow-right-bold"></i><i class="mdi mdi-palette"></i>
+
+      <!-- <p class="toaster">Hello</p> -->
+      <!-- Image -> Colors -->
+    </span>
+  </div>
+</nav>
+
+<main class="bg-dark">
+
+    <div class="container d-flex flex-column">
+      <h5 class="text-light"> Drag and Drop files below </h5>
+      <div class="image-stack">
+        
+        <img id="img1" src="static/imgs/{{filename}}" class="rounded-4 image position-absolute top-50 start-50 translate-middle">
+        
+        
+        <form method="post" action="/" enctype="multipart/form-data">
+          <input type="file" name="file" id="input-file" class="form-control" autocomplete="off" onchange="upload(this.value)" required>
+          <input type="submit" value="submit" class="btn btn-info invisible">
+        </form>
+
+        <div class="inner-shadow rounded-4 border border-5"></div>
+        
+      </div>
+
+      <div class="results">
+        
+
+        <!--
+        {% for c in colors %}
+        <div class="btn color-btn" onclick="copyhex('{{c.hex}}','{{c.txtcolor}}');" style="background-color:#7c7c7c;">
+          <div class="shadow-lg  color-data rounded-2 text-nowrap" style="height:50px; width:{{c.percent}}% ;min-width:5%; background-color: {{c.hex}}; color: {{c.txtcolor}};">
+            {{c.percent}}%  hex:{{c.hex}}  rgb:{{c.rgb}}
+          </div>
+        </div>
+        {% endfor %} 
+        -->
+
+        <h6 class="text-light">colors by percent</h6>
+        <div id="spinner" class="spinner mdl-progress mdl-js-progress mdl-progress__indeterminate hidden" ></div>
+        <div class="grid-container">
+        {% for c in colors_by_percent %}
+
+        <div class="btn color-btn grid-item shadow-lg" onclick="copyhex('{{c.hex}}','{{c.txtcolor}}');" style="background-color:{{c.hex}};">
+          <div class="color-data" style="color: {{c.txtcolor}};">
+            {{c.percent}}% 
+          </div>
+        </div>
+
+        {% endfor %} 
+        </div>
+
+        <h6 class="text-light">colors by saturation</h6>
+        <div id="spinner" class="spinner mdl-progress mdl-js-progress mdl-progress__indeterminate hidden" ></div>
+        <div class="grid-container">
+        {% for c in high_sat %}
+
+        <div class="btn color-btn grid-item shadow-lg" onclick="copyhex('{{c.hex}}','{{c.txtcolor}}');" style="background-color:{{c.hex}};">
+          <div class="color-data" style="color: {{c.txtcolor}};">
+            {{c.sat}}
+          </div>
+        </div>
+
+        {% endfor %} 
+        </div>
+
+
+        <h6 class="text-light">colors by darkness</h6>
+        <div id="spinner" class="spinner mdl-progress mdl-js-progress mdl-progress__indeterminate hidden" ></div>
+        <div class="grid-container">
+        {% for c in dark %}
+
+        <div class="btn color-btn grid-item shadow-lg" onclick="copyhex('{{c.hex}}','{{c.txtcolor}}');" style="background-color:{{c.hex}};">
+          <div class="color-data" style="color: {{c.txtcolor}};">
+            {{c.mean}}
+          </div>
+        </div>
+
+        {% endfor %} 
+        </div>
+
+
+        <h6 class="text-light">colors by brightness</h6>
+        <div id="spinner" class="spinner mdl-progress mdl-js-progress mdl-progress__indeterminate hidden" ></div>
+        <div class="grid-container">
+        {% for c in light %}
+
+        <div class="btn color-btn grid-item shadow-lg" onclick="copyhex('{{c.hex}}','{{c.txtcolor}}');" style="background-color:{{c.hex}};">
+          <div class="color-data" style="color: {{c.txtcolor}};">
+            {{c.mean}}
+          </div>
+        </div>
+
+        {% endfor %} 
+        </div>
+
+        <h6 class="text-light">colors by low-saturation</h6>
+        <div id="spinner" class="spinner mdl-progress mdl-js-progress mdl-progress__indeterminate hidden" ></div>
+        <div class="grid-container">
+        {% for c in low_sat %}
+
+        <div class="btn color-btn grid-item shadow-lg" onclick="copyhex('{{c.hex}}','{{c.txtcolor}}');" style="background-color:{{c.hex}};">
+          <div class="color-data" style="color: {{c.txtcolor}};">
+            {{c.sat}}
+          </div>
+        </div>
+
+        {% endfor %} 
+        </div>
+
+
+      </div>
+    </div>
+
+</main>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="thistoast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+    <div class="toast-header">
+      <!-- <img src="..." class="rounded me-2" alt="..."> -->
+      <!-- <i class="mdi mdi-clipboard-outline"></i> -->
+      <strong id="toast-text" class="me-auto"> Copied to Clipboard </strong>
+      <!-- <small>11 mins ago</small> -->
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+
